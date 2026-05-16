@@ -1,6 +1,8 @@
-package com.org.party_management.dto;
+package com.org.party_management.dto.response;
 
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,5 +15,7 @@ public class PartyResponse {
     private String preferredCurrencyUomId;
     private String description;
     private String statusId;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
 }

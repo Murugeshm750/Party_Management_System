@@ -1,8 +1,9 @@
 package com.org.party_management.service.impl;
 
-import com.org.party_management.dto.PartyRequest;
-import com.org.party_management.dto.PartyResponse;
+import com.org.party_management.dto.request.PartyRequest;
+import com.org.party_management.dto.response.PartyResponse;
 import com.org.party_management.exception.ResourceNotFoundException;
+import com.org.party_management.mapper.PartyMapper;
 import com.org.party_management.model.Party;
 import com.org.party_management.repository.PartyRepository;
 import com.org.party_management.service.PartyService;
@@ -16,57 +17,38 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PartyServiceImpl implements PartyService {
     private final PartyRepository partyRepository;
+    @Autowired
+    private final PartyMapper partyMapper;
 
     @Override
     public PartyResponse createParty(PartyRequest request){
-        Party party = Party.builder()
-                .partyTypeId(request.getPartyTypeId())
-                .preferredCurrencyUomId(request.getPreferredCurrencyUomId())
-                .description(request.getDescription())
-                .statusId(request.getStausId())
-                .build();
-
+        Party party = partyMapper.toEntity(request);
         Party savedParty = partyRepository.save(party);
-        return responseMap(savedParty);
+        return partyMapper.toResponse(savedParty);
     }
 
     @Override
-    public PartyResponse updateParty(Long partyId, PartyRequest partyRequest) {
+    public PartyResponse updateParty(Long partyId, PartyRequest request) {
         Party party = partyRepository.findById(partyId)
-                .orElseThrow(()-> new ResourceNotFoundException("Party Not Found"));
-        party.setPartyTypeId(partyRequest.getPartyTypeId());
-        party.setDescription(partyRequest.getDescription());
-        party.setStatusId(partyRequest.getStausId());
-        party.setPreferredCurrencyUomId(partyRequest.getPreferredCurrencyUomId());
-
+                .orElseThrow(() -> new ResourceNotFoundException("Party Not Found"));
+        partyMapper.updateEntity(party, request);
         Party updatedParty = partyRepository.save(party);
-        return responseMap(updatedParty);
+        return partyMapper.toResponse(updatedParty);
     }
 
     @Override
     public PartyResponse getPartyById(Long partyId) {
         Party party = partyRepository.findById(partyId)
-                .orElseThrow(() -> new ResourceNotFoundException("Party Id Not Found!."));
-
-        return responseMap(party);
+                .orElseThrow(() -> new ResourceNotFoundException("Party Not Found"));
+        return partyMapper.toResponse(party);
     }
 
     @Override
     public List<PartyResponse> getAllParties() {
         return partyRepository.findAll()
                 .stream()
-                .map(this::responseMap)
+                .map(partyMapper::toResponse)
                 .toList();
     }
 
-    @Override
-    public PartyResponse responseMap(Party party) {
-        return PartyResponse.builder()
-                .partyId(party.getPartyId())
-                .partyTypeId(party.getPartyTypeId())
-                .preferredCurrencyUomId(party.getPreferredCurrencyUomId())
-                .description(party.getDescription())
-                .statusId(party.getStatusId())
-                .build();
-    }
 }

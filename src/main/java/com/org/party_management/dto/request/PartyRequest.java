@@ -1,4 +1,4 @@
-package com.org.party_management.dto;
+package com.org.party_management.dto.request;
 
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
@@ -18,7 +18,7 @@ public class PartyRequest {
     private String description;
 
     @NotBlank(message = "Status Id Cannot be Empty.")
-    private String stausId;
+    private String statusId;
 
 
 }

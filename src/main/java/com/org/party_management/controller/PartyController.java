@@ -1,14 +1,12 @@
 package com.org.party_management.controller;
 
-import com.org.party_management.dto.ApiResponse;
-import com.org.party_management.dto.PartyRequest;
-import com.org.party_management.dto.PartyResponse;
+import com.org.party_management.dto.response.ApiResponse;
+import com.org.party_management.dto.request.PartyRequest;
+import com.org.party_management.dto.response.PartyResponse;
 import com.org.party_management.service.PartyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,7 +36,7 @@ public class PartyController {
         PartyResponse response = partyService.updateParty(partyId, request);
         return ApiResponse.success(
                 HttpStatus.OK.value(),
-                "",
+                "Party Updated Successfully.",
                 response
         );
     }

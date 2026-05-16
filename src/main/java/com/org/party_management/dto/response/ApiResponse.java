@@ -1,4 +1,4 @@
-package com.org.party_management.dto;
+package com.org.party_management.dto.response;
 
 import lombok.*;
 
