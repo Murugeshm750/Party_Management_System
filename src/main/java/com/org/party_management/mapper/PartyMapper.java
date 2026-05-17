@@ -27,7 +27,7 @@ public class PartyMapper {
                 .description(party.getDescription())
                 .statusId(party.getStatusId())
                 .createdDate(party.getCreatedDate())
-                .updatedDate(party.getUpdateDate())
+                .updatedDate(party.getUpdatedDate())
                 .build();
     }
 
