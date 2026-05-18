@@ -22,7 +22,9 @@ public class PartyGroup extends BaseEntity {
     @JoinColumn(name = "party_id")
     private Party party;
 
+    @Column(name = "group_name")
     private String groupName;
 
+    @Column(name = "description")
     private String description;
 }
