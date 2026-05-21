@@ -4,7 +4,6 @@ package com.org.party_management.service.impl;
 import com.org.party_management.dto.request.PartyRequest;
 import com.org.party_management.dto.request.UserLoginPatchRequest;
 import com.org.party_management.dto.request.UserLoginRequest;
-import com.org.party_management.dto.response.PartyResponse;
 import com.org.party_management.dto.response.UserLoginResponse;
 import com.org.party_management.exception.ResourceNotFoundException;
 import com.org.party_management.mapper.PartyMapper;

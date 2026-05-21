@@ -4,8 +4,6 @@ import com.org.party_management.dto.request.UserLoginPatchRequest;
 import com.org.party_management.dto.request.UserLoginRequest;
 import com.org.party_management.dto.response.UserLoginResponse;
 import com.org.party_management.model.UserLogin;
-import com.org.party_management.repository.UserLoginRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

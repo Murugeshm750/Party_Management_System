@@ -4,6 +4,8 @@ import com.org.party_management.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "party")
 @Getter
@@ -38,4 +40,7 @@ public class Party extends BaseEntity {
 
     @OneToOne(mappedBy = "party")
     private PartyGroup partyGroup;
+
+    @OneToMany(mappedBy = "party")
+    private List<PartyPayment> payments;
 }
