@@ -18,6 +18,8 @@ public class UserLoginRequest {
     private String middleName;
     @NotBlank(message = "Last Name Can't be Empty")
     private String lastName;
+    @NotBlank(message = "Role Can't be Empty")
+    private String roleTypeId;
 
 
 }

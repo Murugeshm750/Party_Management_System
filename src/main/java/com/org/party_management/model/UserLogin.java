@@ -2,10 +2,8 @@ package com.org.party_management.model;
 
 import com.org.party_management.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.validator.constraints.UUID;
+
 
 @Entity
 @Table(name = "user_login")
@@ -42,5 +40,15 @@ public class UserLogin extends BaseEntity {
     @NonNull
     private String lastName;
 
+    @Column(name = "role_type_id", nullable = false, length = 30)
+    private String roleTypeId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "role_type_id",
+            referencedColumnName = "role_type_id",
+            insertable = false,
+            updatable = false
+    )
+    private PartyRole partyRole;
 }

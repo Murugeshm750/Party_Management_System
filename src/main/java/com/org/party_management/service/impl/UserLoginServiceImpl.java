@@ -14,7 +14,11 @@ import com.org.party_management.repository.PartyRepository;
 import com.org.party_management.repository.UserLoginRepository;
 import com.org.party_management.service.UserLoginService;
 import lombok.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -28,6 +32,7 @@ public class UserLoginServiceImpl implements UserLoginService {
     private final PartyRepository partyRepository;
     private final PartyMapper partyMapper;
 
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -40,7 +45,9 @@ public class UserLoginServiceImpl implements UserLoginService {
         Party party = partyMapper.toEntity(partyRequest);
         Party savedParty = partyRepository.save(party);
 
+
         UserLogin userLogin = userLoginMapper.createUserLogin(request);
+        userLogin.setPassword(passwordEncoder.encode(request.getPassword()) );
         userLogin.setParty(savedParty);
 
         UserLogin savedUserLogin = userLoginRepository.saveAndFlush(userLogin);
@@ -73,4 +80,22 @@ public class UserLoginServiceImpl implements UserLoginService {
                 .map(userLoginMapper::userLoginResponse)
                 .toList();
     }
+
+/*    @Override
+    public UserLogin loadUserLoginByUsername(String userLoginId) {
+        UserLogin user = userLoginRepository
+                .findByUserLoginId(userLoginId)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(
+                                "User not found"
+                        ));
+
+        return new User(
+                user.getUserLoginId(),
+                user.getPassword(),
+                List.of(
+                        new SimpleGrantedAuthority("ROLE_USER")
+                )
+        );
+    }*/
 }
