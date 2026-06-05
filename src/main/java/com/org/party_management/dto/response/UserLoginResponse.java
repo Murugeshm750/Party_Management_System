@@ -15,4 +15,6 @@ public class UserLoginResponse {
     private String middleName;
     private String lastName;
     private String role;
+    private Long partyGroupId;
+    private String partyGroupName;
 }

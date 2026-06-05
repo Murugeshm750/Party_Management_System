@@ -9,7 +9,9 @@ import com.org.party_management.exception.ResourceNotFoundException;
 import com.org.party_management.mapper.PartyMapper;
 import com.org.party_management.mapper.UserLoginMapper;
 import com.org.party_management.model.Party;
+import com.org.party_management.model.PartyGroup;
 import com.org.party_management.model.UserLogin;
+import com.org.party_management.repository.PartyGroupRepository;
 import com.org.party_management.repository.PartyRepository;
 import com.org.party_management.repository.UserLoginRepository;
 import com.org.party_management.service.UserLoginService;
@@ -21,6 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +38,7 @@ public class UserLoginServiceImpl implements UserLoginService {
     private final PartyMapper partyMapper;
 
     private final PasswordEncoder passwordEncoder;
+    private final PartyGroupRepository partyGroupRepository;
 
 
     @Override
@@ -43,6 +49,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         partyRequest.setPartyTypeId("PARTY_PERSON");
         partyRequest.setStatusId("PARTY_ENABLED");
         Party party = partyMapper.toEntity(partyRequest);
+        party.setParentPartyId(request.getPartyId());
         Party savedParty = partyRepository.save(party);
 
 
@@ -75,9 +82,24 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public List<UserLoginResponse> getAllUsers() {
+
+        Map<Long, String> groupNames =
+                partyGroupRepository.findAll()
+                        .stream()
+                        .collect(Collectors.toMap(
+                                PartyGroup::getPartyId,
+                                PartyGroup::getGroupName
+                        ));
+
+
         return userLoginRepository.findAll()
                 .stream()
-                .map(userLoginMapper::userLoginResponse)
+                .map(user -> {
+                    UserLoginResponse response = userLoginMapper.userLoginResponse(user);
+                        response.setPartyGroupName(groupNames.get(response.getPartyGroupId()));
+                    return  response;
+
+                })
                 .toList();
     }
 

@@ -3,6 +3,7 @@ package com.org.party_management.controller;
 import com.org.party_management.dto.request.LoginRequest;
 import com.org.party_management.dto.response.ApiResponse;
 import com.org.party_management.dto.response.LoginResponse;
+import com.org.party_management.dto.response.UserLoginResponse;
 import com.org.party_management.model.UserLogin;
 import com.org.party_management.repository.UserLoginRepository;
 import com.org.party_management.security.JwtService;
@@ -34,6 +35,7 @@ public class AuthController {
 
         String token = jwtService.generateToken(user.getUserLoginId());
 
-        return ApiResponse.success(HttpStatus.OK.value(), "" , new LoginResponse(token));
+
+        return ApiResponse.success(HttpStatus.OK.value(), "" , new LoginResponse(token, user.getRoleTypeId(), user.getUserLoginId(), user.getPartyId()));
     }
 }

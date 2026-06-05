@@ -9,6 +9,7 @@ import com.org.party_management.repository.PartyRepository;
 import com.org.party_management.service.PartyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,9 +38,15 @@ public class PartyServiceImpl implements PartyService {
     }
 
     @Override
+    @Cacheable(value = "parties", key = "#partyId")
     public PartyResponse getPartyById(Long partyId) {
+
         Party party = partyRepository.findById(partyId)
                 .orElseThrow(() -> new ResourceNotFoundException("Party Not Found"));
+
+        System.out.println("Fetching from DB");
+
+
         return partyMapper.toResponse(party);
     }
 

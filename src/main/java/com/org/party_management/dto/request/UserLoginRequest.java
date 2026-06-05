@@ -1,6 +1,7 @@
 package com.org.party_management.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -20,6 +21,8 @@ public class UserLoginRequest {
     private String lastName;
     @NotBlank(message = "Role Can't be Empty")
     private String roleTypeId;
+    @NotNull(message = "Party Group Can't be Empty")
+    private Long partyId;
 
 
 }

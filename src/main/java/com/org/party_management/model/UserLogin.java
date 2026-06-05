@@ -12,6 +12,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "password")       // ✅ never print password in logs
 public class UserLogin extends BaseEntity {
 
     @Id

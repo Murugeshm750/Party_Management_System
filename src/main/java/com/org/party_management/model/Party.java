@@ -38,6 +38,9 @@ public class Party extends BaseEntity {
     @Column(name = "status_id", nullable = false, length = 20)
     private String statusId;
 
+    @Column(name = "parent_party_id")
+    private Long parentPartyId;
+
     @OneToOne(mappedBy = "party")
     private PartyGroup partyGroup;
 

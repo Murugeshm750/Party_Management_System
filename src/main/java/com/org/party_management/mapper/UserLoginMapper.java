@@ -4,8 +4,10 @@ import com.org.party_management.dto.request.UserLoginPatchRequest;
 import com.org.party_management.dto.request.UserLoginRequest;
 import com.org.party_management.dto.response.UserLoginResponse;
 import com.org.party_management.exception.ResourceNotFoundException;
+import com.org.party_management.model.Party;
 import com.org.party_management.model.PartyRole;
 import com.org.party_management.model.UserLogin;
+import com.org.party_management.repository.PartyRepository;
 import com.org.party_management.repository.PartyRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class UserLoginMapper {
 
     private final PartyRoleRepository partyRoleRepository;
+    private final PartyRepository partyRepository;
 
     public UserLogin createUserLogin(UserLoginRequest request){
         return UserLogin.builder()
@@ -30,6 +33,10 @@ public class UserLoginMapper {
     public UserLoginResponse userLoginResponse(UserLogin userLogin){
         PartyRole partyRole = partyRoleRepository.findById(userLogin.getRoleTypeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Role Not Found"));
+
+        Party party = partyRepository.findById(userLogin.getPartyId())
+                .orElseThrow(() -> new RuntimeException("Party Not Found"));
+
         return UserLoginResponse.builder()
                 .partyId(userLogin.getPartyId())
                 .userLoginId(userLogin.getUserLoginId())
@@ -37,6 +44,7 @@ public class UserLoginMapper {
                 .middleName(userLogin.getMiddleName())
                 .lastName(userLogin.getLastName())
                 .role(partyRole.getDescription())
+                .partyGroupId(party.getParentPartyId())
                 .build();
     }
 
