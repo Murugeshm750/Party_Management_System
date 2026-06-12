@@ -28,6 +28,7 @@ public class PartyMapper {
                 .statusId(party.getStatusId())
                 .createdDate(party.getCreatedDate())
                 .updatedDate(party.getUpdatedDate())
+                .contacts(party.getContactMechList())
                 .build();
     }
 

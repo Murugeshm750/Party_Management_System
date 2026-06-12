@@ -1,9 +1,11 @@
 package com.org.party_management.service.impl;
 
 import com.org.party_management.dto.request.PartyRequest;
+import com.org.party_management.dto.response.ContactMechResponse;
 import com.org.party_management.dto.response.PartyResponse;
 import com.org.party_management.exception.ResourceNotFoundException;
 import com.org.party_management.mapper.PartyMapper;
+import com.org.party_management.model.ContactMech;
 import com.org.party_management.model.Party;
 import com.org.party_management.repository.PartyRepository;
 import com.org.party_management.service.PartyService;
@@ -45,6 +47,21 @@ public class PartyServiceImpl implements PartyService {
                 .orElseThrow(() -> new ResourceNotFoundException("Party Not Found"));
 
         System.out.println("Fetching from DB");
+
+        List<ContactMech> contacts =
+                party.getContactMechList()
+                        .stream()
+                        .map(contact -> {
+                            ContactMech c = new ContactMech();
+                            c.setContactMechId(contact.getContactMechId());
+                            c.setContactMechTypeId(contact.getContactMechTypeId());
+                            c.setContactValue(contact.getContactValue());
+                            return c;
+                        })
+                        .toList();
+
+        party.setContactMechList(contacts);
+
 
 
         return partyMapper.toResponse(party);

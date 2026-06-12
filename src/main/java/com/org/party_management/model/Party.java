@@ -46,4 +46,7 @@ public class Party extends BaseEntity {
 
     @OneToMany(mappedBy = "party")
     private List<PartyPayment> payments;
+
+    @OneToMany(mappedBy = "party")
+    private List<ContactMech> contactMechList;
 }

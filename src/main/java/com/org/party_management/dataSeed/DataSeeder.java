@@ -1,8 +1,11 @@
 package com.org.party_management.dataSeed;
 
 import com.org.party_management.dto.request.UserLoginRequest;
+import com.org.party_management.model.ContactMech;
+import com.org.party_management.model.ContactMechType;
 import com.org.party_management.model.PartyRole;
 import com.org.party_management.model.PartyType;
+import com.org.party_management.repository.ContactMechTypeRepository;
 import com.org.party_management.repository.PartyRoleRepository;
 import com.org.party_management.repository.PartyTypeRepository;
 import com.org.party_management.repository.UserLoginRepository;
@@ -23,6 +26,7 @@ public class DataSeeder implements CommandLineRunner {
    private final PartyRoleRepository partyRoleRepository;
    private final UserLoginRepository userLoginRepository;
    private final UserLoginService userLoginService;
+   private final ContactMechTypeRepository contactMechTypeRepository;
 
 
     @Override
@@ -30,6 +34,7 @@ public class DataSeeder implements CommandLineRunner {
         seedPartyTypeData();
         seedPartyRoleData();
         seedAdminUser();
+        seedContactMechTypeData();
 
     }
 
@@ -94,7 +99,24 @@ public class DataSeeder implements CommandLineRunner {
     }
 
 
+    private void seedContactMechTypeData(){
+        validateContactMechTypeData("EMAIL_ADDRESS", "Email Address");
+        validateContactMechTypeData("MOBILE_NUMBER", "Mobile Number");
+        validateContactMechTypeData("POSTAL_ADDRESS", "Postal Address");
+    }
 
+    private void validateContactMechTypeData(String contactMechTypeId, String description){
+        boolean exists = contactMechTypeRepository.existsById(contactMechTypeId);
+
+        if (!exists) {
+            ContactMechType contactMechType = ContactMechType.builder()
+                    .contactMechTypeId(contactMechTypeId)
+                    .description(description)
+                    .build();
+
+            contactMechTypeRepository.save(contactMechType);
+        }
+    }
 
 
 
